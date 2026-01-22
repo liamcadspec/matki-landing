@@ -11,7 +11,7 @@
         const fileName = params.get("fileName");
 
         // Build the deep link for your app
-        const deepLink = `matki://open?driveItemId=${encodeURIComponent(driveItemId)}&fileName=${encodeURIComponent(fileName)}`;
+        const deepLink = `matzip://open?driveItemId=${encodeURIComponent(driveItemId)}&fileName=${encodeURIComponent(fileName)}`;
 
         // Redirect immediately
         window.location.href = deepLink;
@@ -21,3 +21,4 @@
     <p>Launching Matki Smart Survey…</p>
 </body>
 </html>
+
