@@ -5,26 +5,33 @@
     <title>Launching Matki Smart Survey…</title>
 
     <script>
-        // Read query parameters from the URL
         const params = new URLSearchParams(window.location.search);
         const driveItemId = params.get("driveItemId");
         const fileName = params.get("fileName");
 
-        // log the params in console to ensure they are not null
         console.log("driveItemId:", driveItemId);
         console.log("fileName:", fileName);
 
-
-        // Validate parameters
         if (!driveItemId || !fileName) {
             document.body.innerHTML = "<p style='color:red;'>Missing required parameters. Cannot launch Matki Smart Survey.</p>";
             throw new Error("Missing deep link parameters");
         }
 
-        // Build the deep link for your app
-        const deepLink = `matzip://open?driveItemId=${encodeURIComponent(driveItemId)}&fileName=${encodeURIComponent(fileName)}`;
+        // ⭐ NEW: capture the SharePoint share URL from the referrer
+        const shareUrl = document.referrer;
+        console.log("shareUrl:", shareUrl);
 
-        // Redirect immediately
+        if (!shareUrl) {
+            document.body.innerHTML = "<p style='color:red;'>Missing SharePoint referrer. Cannot launch Matki Smart Survey.</p>";
+            throw new Error("Missing shareUrl");
+        }
+
+        // Build the deep link
+        const deepLink =
+            `matzip://open?driveItemId=${encodeURIComponent(driveItemId)}` +
+            `&fileName=${encodeURIComponent(fileName)}` +
+            `&shareUrl=${encodeURIComponent(shareUrl)}`;
+
         window.location.href = deepLink;
     </script>
 </head>
@@ -32,6 +39,8 @@
     <p>Launching Matki Smart Survey…</p>
 </body>
 </html>
+
+
 
 
 
