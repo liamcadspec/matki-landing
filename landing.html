@@ -10,6 +10,12 @@
         const driveItemId = params.get("driveItemId");
         const fileName = params.get("fileName");
 
+        // Validate parameters
+        if (!driveItemId || !fileName) {
+            document.body.innerHTML = "<p style='color:red;'>Missing required parameters. Cannot launch Matki Smart Survey.</p>";
+            throw new Error("Missing deep link parameters");
+        }
+
         // Build the deep link for your app
         const deepLink = `matzip://open?driveItemId=${encodeURIComponent(driveItemId)}&fileName=${encodeURIComponent(fileName)}`;
 
@@ -21,4 +27,5 @@
     <p>Launching Matki Smart Survey…</p>
 </body>
 </html>
+
 
