@@ -10,6 +10,11 @@
         const driveItemId = params.get("driveItemId");
         const fileName = params.get("fileName");
 
+        // log the params in console to ensure they are not null
+        console.log("driveItemId:", driveItemId);
+        console.log("fileName:", fileName);
+
+
         // Validate parameters
         if (!driveItemId || !fileName) {
             document.body.innerHTML = "<p style='color:red;'>Missing required parameters. Cannot launch Matki Smart Survey.</p>";
@@ -27,5 +32,6 @@
     <p>Launching Matki Smart Survey…</p>
 </body>
 </html>
+
 
 
