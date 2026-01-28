@@ -21,24 +21,19 @@
             throw new Error("Missing deep link parameters");
         }
 
-        // Extract shareId from the full URL
-        function extractShareId(url) {
-            const parts = url.split('/');
-            const lastSegment = parts[parts.length - 1];
-            return lastSegment.split('?')[0];
+        // Clean the shareUrl by stripping query parameters
+        function cleanShareUrl(url) {
+            return url.split('?')[0];
         }
 
-        const shareId = extractShareId(rawShareUrl);
+        const cleanedShareUrl = cleanShareUrl(rawShareUrl);
 
-        // Reconstruct a clean shareUrl in the format Graph expects
-        const cleanShareUrl = `https://stanfordmarshgroup.sharepoint.com/:u:/s/Test/${shareId}`;
-
-        console.log("Cleaned shareUrl:", cleanShareUrl);
+        console.log("Cleaned shareUrl:", cleanedShareUrl);
 
         const deepLink =
             `matzip://open?driveItemId=${encodeURIComponent(driveItemId)}` +
             `&fileName=${encodeURIComponent(fileName)}` +
-            `&shareUrl=${encodeURIComponent(cleanShareUrl)}`;
+            `&shareUrl=${encodeURIComponent(cleanedShareUrl)}`;
 
         window.location.href = deepLink;
     </script>
@@ -47,12 +42,3 @@
     <p>Launching Matki Smart Survey…</p>
 </body>
 </html>
-
-
-
-
-
-
-
-
-
