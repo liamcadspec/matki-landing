@@ -5,47 +5,41 @@
     <title>Launching Matki Smart Survey…</title>
 
     <script>
-        // Read parameters from the URL
         const params = new URLSearchParams(window.location.search);
 
         const driveItemId = params.get("driveItemId");
         const fileName = params.get("fileName");
-        const shareUrl = params.get("shareUrl");
+        const rawShareUrl = params.get("shareUrl");
 
         console.log("driveItemId:", driveItemId);
         console.log("fileName:", fileName);
-        console.log("shareUrl:", shareUrl);
+        console.log("rawShareUrl:", rawShareUrl);
 
-        // Validate required parameters
-        if (!driveItemId || !fileName || !shareUrl) {
+        if (!driveItemId || !fileName || !rawShareUrl) {
             document.body.innerHTML =
                 "<p style='color:red;'>Missing required parameters. Cannot launch Matki Smart Survey.</p>";
             throw new Error("Missing deep link parameters");
         }
 
-        // Extract the SharePoint shareId from the full share URL
+        // Extract shareId from the full URL
         function extractShareId(url) {
-            // Example: https://tenant.sharepoint.com/:u:/s/Test/ABC123?e=xyz
             const parts = url.split('/');
-            const lastSegment = parts[parts.length - 1]; // "ABC123?e=xyz"
-            return lastSegment.split('?')[0]; // "ABC123"
+            const lastSegment = parts[parts.length - 1];
+            return lastSegment.split('?')[0];
         }
 
-        const shareId = extractShareId(shareUrl);
+        const shareId = extractShareId(rawShareUrl);
 
-        // Base64 encode the shareId exactly as Graph expects
-        const encodedShareId = btoa(shareId);
+        // Reconstruct a clean shareUrl in the format Graph expects
+        const cleanShareUrl = `https://stanfordmarshgroup.sharepoint.com/:u:/s/Test/${shareId}`;
 
-        console.log("Extracted shareId:", shareId);
-        console.log("encodedShareId:", encodedShareId);
+        console.log("Cleaned shareUrl:", cleanShareUrl);
 
-        // Build the deep link for the desktop app
         const deepLink =
             `matzip://open?driveItemId=${encodeURIComponent(driveItemId)}` +
             `&fileName=${encodeURIComponent(fileName)}` +
-            `&encodedShareId=${encodeURIComponent(encodedShareId)}`;
+            `&shareUrl=${encodeURIComponent(cleanShareUrl)}`;
 
-        // Launch the desktop app
         window.location.href = deepLink;
     </script>
 </head>
@@ -53,6 +47,7 @@
     <p>Launching Matki Smart Survey…</p>
 </body>
 </html>
+
 
 
 
