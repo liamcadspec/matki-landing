@@ -5,7 +5,7 @@
     <title>Launching Matki Smart Survey…</title>
 
     <script>
-        // Read all parameters directly from the URL
+        // Read parameters from the URL
         const params = new URLSearchParams(window.location.search);
 
         const driveItemId = params.get("driveItemId");
@@ -23,11 +23,27 @@
             throw new Error("Missing deep link parameters");
         }
 
-        // Build the deep link exactly as the app expects
+        // Extract the SharePoint shareId from the full share URL
+        function extractShareId(url) {
+            // Example: https://tenant.sharepoint.com/:u:/s/Test/ABC123?e=xyz
+            const parts = url.split('/');
+            const lastSegment = parts[parts.length - 1]; // "ABC123?e=xyz"
+            return lastSegment.split('?')[0]; // "ABC123"
+        }
+
+        const shareId = extractShareId(shareUrl);
+
+        // Base64 encode the shareId exactly as Graph expects
+        const encodedShareId = btoa(shareId);
+
+        console.log("Extracted shareId:", shareId);
+        console.log("encodedShareId:", encodedShareId);
+
+        // Build the deep link for the desktop app
         const deepLink =
             `matzip://open?driveItemId=${encodeURIComponent(driveItemId)}` +
             `&fileName=${encodeURIComponent(fileName)}` +
-            `&shareUrl=${encodeURIComponent(shareUrl)}`;
+            `&encodedShareId=${encodeURIComponent(encodedShareId)}`;
 
         // Launch the desktop app
         window.location.href = deepLink;
@@ -37,6 +53,7 @@
     <p>Launching Matki Smart Survey…</p>
 </body>
 </html>
+
 
 
 
