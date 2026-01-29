@@ -11,19 +11,6 @@
         const fileName = params.get("fileName");
         const rawShareUrl = params.get("shareUrl");
 
-        // === NEW: Write debug info to the page ===
-        function showDebug() {
-            const panel = document.getElementById("debug-panel");
-            panel.textContent =
-                "DEBUG landing page params:\n\n" +
-                "driveItemId: " + driveItemId + "\n" +
-                "fileName:    " + fileName + "\n" +
-                "rawShareUrl: " + rawShareUrl + "\n";
-        }
-
-        // Call debug immediately so we see the values before redirect
-        window.addEventListener("DOMContentLoaded", showDebug);
-
         if (!driveItemId || !fileName || !rawShareUrl) {
             document.body.innerHTML =
                 "<p style='color:red;'>Missing required parameters. Cannot launch Matki Smart Survey.</p>";
@@ -64,3 +51,4 @@
     </div>
 </body>
 </html>
+
