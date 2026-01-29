@@ -11,9 +11,18 @@
         const fileName = params.get("fileName");
         const rawShareUrl = params.get("shareUrl");
 
-        console.log("driveItemId:", driveItemId);
-        console.log("fileName:", fileName);
-        console.log("rawShareUrl:", rawShareUrl);
+        // === NEW: Write debug info to the page ===
+        function showDebug() {
+            const panel = document.getElementById("debug-panel");
+            panel.textContent =
+                "DEBUG landing page params:\n\n" +
+                "driveItemId: " + driveItemId + "\n" +
+                "fileName:    " + fileName + "\n" +
+                "rawShareUrl: " + rawShareUrl + "\n";
+        }
+
+        // Call debug immediately so we see the values before redirect
+        window.addEventListener("DOMContentLoaded", showDebug);
 
         if (!driveItemId || !fileName || !rawShareUrl) {
             document.body.innerHTML =
@@ -28,17 +37,30 @@
 
         const cleanedShareUrl = cleanShareUrl(rawShareUrl);
 
-        console.log("Cleaned shareUrl:", cleanedShareUrl);
-
         const deepLink =
             `matzip://open?driveItemId=${encodeURIComponent(driveItemId)}` +
             `&fileName=${encodeURIComponent(fileName)}` +
             `&shareUrl=${encodeURIComponent(cleanedShareUrl)}`;
 
-        window.location.href = deepLink;
+        // Delay redirect slightly so debug panel is visible
+        setTimeout(() => {
+            window.location.href = deepLink;
+        }, 800);
     </script>
 </head>
 <body>
     <p>Launching Matki Smart Survey…</p>
+
+    <!-- === NEW: Debug panel visible on page === -->
+    <div id="debug-panel"
+         style="white-space: pre-wrap;
+                background: #222;
+                color: #0f0;
+                padding: 12px;
+                margin-top: 20px;
+                font-family: Consolas, monospace;
+                border: 1px solid #555;">
+        Loading debug info…
+    </div>
 </body>
 </html>
