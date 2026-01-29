@@ -17,12 +17,7 @@
             throw new Error("Missing deep link parameters");
         }
 
-        // Clean the shareUrl by stripping query parameters
-        function cleanShareUrl(url) {
-            return url.split('?')[0];
-        }
-
-        const cleanedShareUrl = cleanShareUrl(rawShareUrl);
+        const cleanedShareUrl = rawShareUrl;
 
         const deepLink =
             `matzip://open?driveItemId=${encodeURIComponent(driveItemId)}` +
@@ -39,5 +34,6 @@
     <p>Launching Matki Smart Survey…</p>
 </body>
 </html>
+
 
 
